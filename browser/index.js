@@ -106,11 +106,6 @@ module.exports = module.exports = {
                 }
             }
 
-            reset() {
-
-            }
-
-
             componentDidMount() {
                 L.drawLocal = require('../../../browser/modules/drawLocales/draw.js');
 
@@ -239,8 +234,10 @@ module.exports = module.exports = {
 
                 markers.clearLayers();
 
+                //Copy state to new array
                 let markerData = this.state.data.slice();;
 
+                //we dont want to draw more than 800 features since it'll slow down leaflet
                 if (markerData.length >= 800){
                     markerData.splice(800,markerData.length - 800);
                 }
@@ -250,7 +247,8 @@ module.exports = module.exports = {
                     let feature = markerData[i];
 
                     let name = feature.properties.vejnavn + ' ' + feature.properties.husnr;
-                    let concatedName = name.replace(/\s/g, '');
+                    //Remove spaces and ' chars
+                    let concatedName = name.replace(/'|\s/g, '');
 
                     let icon = new L.DivIcon({
                         className: 'brevflet-marker ' + 'brevflet-marker-' + concatedName,
@@ -361,11 +359,7 @@ module.exports = module.exports = {
 
                                 <div className="selected-addresses">
                                     Valgte Addresser: {this.state.data.length}
-                                </div>
-                                <div className="btn-group">
-                                    <input id="custom-search" className="custom-search typeahead" type="text" placeholder="Søg" />
-                                    <span id="searchclear" className="glyphicon glyphicon-remove-circle"></span>
-                                </div>
+                                </div>          
 
                                 <div className="list" style={this.marginBottomXl}>
                                     <ul className="list-group">
@@ -380,7 +374,7 @@ module.exports = module.exports = {
             }
         }
 
-        utils.createMainTab(exId, "Brevflet", "Vælg addresser til brug i Edj Explorer ", require('./../../../browser/modules/height')().max);
+        utils.createMainTab(exId, "Brevflet", "Vælg addresser til brug i Edj Explorer. Der kan maks vises 100 addresser i menuen, og maks 800 på kortet", require('./../../../browser/modules/height')().max);
 
         // Append to DOM
         //==============
