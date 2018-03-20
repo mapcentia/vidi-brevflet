@@ -51,6 +51,10 @@ var drawControl;
  */
 var mapObj;
 
+/**
+ *
+ */
+var transformPoint;
 
 /**
  *
@@ -67,6 +71,7 @@ module.exports = module.exports = {
     set: function (o) {
         cloud = o.cloud;
         utils = o.utils;
+        transformPoint = o.transformPoint;
         backboneEvents = o.backboneEvents;
         return this;
     },
@@ -150,6 +155,7 @@ module.exports = module.exports = {
                 mapObj.on('draw:edited', (e) => this.polygonChanged(e));
                 mapObj.on('draw:deletestop', (e) => this.polygonChanged(e));
             }
+
 
             polygonCreated(e) {
                 //Draw the selected polygon on the drawnItems layer
@@ -238,8 +244,8 @@ module.exports = module.exports = {
                 let markerData = this.state.data.slice();;
 
                 //we dont want to draw more than 800 features since it'll slow down leaflet
-                if (markerData.length >= 800){
-                    markerData.splice(800,markerData.length - 800);
+                if (markerData.length >= 800) {
+                    markerData.splice(800, markerData.length - 800);
                 }
 
                 //Draw a marker for each selected point
@@ -259,7 +265,7 @@ module.exports = module.exports = {
                         icon: icon,
                         title: feature.properties.vejnavn + " " + feature.properties.husnr
                     })
-                    .addTo(markers);
+                        .addTo(markers);
                 }
             }
 
@@ -323,8 +329,8 @@ module.exports = module.exports = {
 
                 let listData = this.state.data.slice();
 
-                if (listData.length >= 100){
-                    listData.splice(100,listData.length - 100);
+                if (listData.length >= 100) {
+                    listData.splice(100, listData.length - 100);
                 }
 
                 let selected = listData.map((x, index) => {
@@ -359,7 +365,7 @@ module.exports = module.exports = {
 
                                 <div className="selected-addresses">
                                     Valgte Addresser: {this.state.data.length}
-                                </div>          
+                                </div>
 
                                 <div className="list" style={this.marginBottomXl}>
                                     <ul className="list-group">
@@ -367,7 +373,10 @@ module.exports = module.exports = {
                                     </ul>
                                 </div>
                             </div>
-                            <button className="btn btn-primary" onClick={(e) => this.onSendToExplorer(e)}>Send til Ejd Explorer</button>
+                            <div style={{textAlign:'center'}} >
+                                <button className="btn btn-primary" onClick={(e) => this.onSendToExplorer(e)}>Send til Ejd Explorer</button>
+                            </div>
+
                         </div>
                     </div>
                 );
