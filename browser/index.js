@@ -39,7 +39,9 @@ var drawnItems = new L.FeatureGroup();
  *
  * @type {L.FeatureGroup}
  */
-var markers = new L.FeatureGroup();
+var markers = L.markerClusterGroup({
+    disableClusteringAtZoom:19
+});
 
 /**
  * @type {*|exports|module.exports}
@@ -148,8 +150,9 @@ module.exports = module.exports = {
                     }
                 });
 
+
+
                 mapObj.addControl(drawnItems);
-                mapObj.addControl(markers);
 
                 mapObj.on('draw:created', (e) => this.polygonCreated(e));
                 mapObj.on('draw:edited', (e) => this.polygonChanged(e));
@@ -239,14 +242,9 @@ module.exports = module.exports = {
                 })
 
                 markers.clearLayers();
+                mapObj.addLayer(markers);
 
-                //Copy state to new array
-                let markerData = this.state.data.slice();;
-
-                //we dont want to draw more than 800 features since it'll slow down leaflet
-                if (markerData.length >= 800) {
-                    markerData.splice(800, markerData.length - 800);
-                }
+                let markerData = this.state.data;
 
                 //Draw a marker for each selected point
                 for (let i = 0; i < markerData.length; i++) {
@@ -270,6 +268,12 @@ module.exports = module.exports = {
             }
 
             onSendToExplorer(e) {
+
+                if (this.state.data.length <= 0) {
+                    alert("Vælg Addresser først");
+                    return;
+                }
+
                 let municipalitycode = [];
                 let streetcode = [];
                 let housecode = [];
@@ -361,6 +365,9 @@ module.exports = module.exports = {
                                         </label>
 
                                     </div>
+                                    <div className="btn-container" style={{ textAlign: 'center' }} >
+                                        <button className="btn btn-primary" onClick={(e) => this.onSendToExplorer(e)}>Send til Ejd Explorer</button>
+                                    </div>
                                 </div>
 
                                 <div className="selected-addresses">
@@ -373,9 +380,7 @@ module.exports = module.exports = {
                                     </ul>
                                 </div>
                             </div>
-                            <div style={{textAlign:'center'}} >
-                                <button className="btn btn-primary" onClick={(e) => this.onSendToExplorer(e)}>Send til Ejd Explorer</button>
-                            </div>
+
 
                         </div>
                     </div>
