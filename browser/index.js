@@ -80,9 +80,7 @@ module.exports = module.exports = {
 
     init: function () {
 
-        backboneEvents.get().on("reset:all", function () {
-           alert('test'); 
-        });
+       
 
         mapObj = cloud.get().map;
 
@@ -93,26 +91,34 @@ module.exports = module.exports = {
             constructor(props) {
                 super(props);
 
+                let self = this
+                backboneEvents.get().on("reset:all", function () {
+                    //If component is not active, reset all other
+                    if (self.state.active){
+                        self.onActive(false);
+                    }                    
+                });
+
                 this.state = {
                     active: false,
                     data: []
                 };
+
             }
 
-            onActive(e) {
+            onActive(checked) {
                 this.setState({
-                    active: e.target.checked
+                    active: checked
                 });
 
-                if (e.target.checked) {
+                if (checked) {
 
-                    backboneEvents.get().trigger("off:infoClick");
+                    backboneEvents.get().trigger("reset:all");
                     mapObj.addControl(drawControl);
 
                 } else {
                     drawnItems.clearLayers();
                     markers.clearLayers();
-                    backboneEvents.get().trigger("on:infoClick");
                     mapObj.removeControl(drawControl);
                 }
             }
@@ -364,9 +370,9 @@ module.exports = module.exports = {
                             <div className="panel-body">
                                 <div className="form-group">
                                     <div className="togglebutton">
-                                        <label><input id="streetview-btn" type="checkbox"
-                                            defaultChecked={this.state.active}
-                                            onChange={(e) => this.onActive(e)} />{__("Activate")}
+                                        <label><input id="brevflet-btn" type="checkbox"
+                                            checked={this.state.active}
+                                            onChange={(e) => this.onActive(e.target.checked)} />{__("Activate")}
                                         </label>
 
                                     </div>
