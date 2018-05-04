@@ -5,6 +5,8 @@
 
 'use strict';
 
+require('leaflet.markercluster');
+
 /**
  *
  * @type {*|exports|module.exports}
