@@ -40,7 +40,7 @@ var drawnItems = new L.FeatureGroup();
  * @type {L.FeatureGroup}
  */
 var markers = L.markerClusterGroup({
-    disableClusteringAtZoom:19
+    disableClusteringAtZoom:18
 });
 
 /**
@@ -79,6 +79,10 @@ module.exports = module.exports = {
     },
 
     init: function () {
+
+        backboneEvents.get().on("reset:all", function () {
+           alert('test'); 
+        });
 
         mapObj = cloud.get().map;
 
@@ -162,6 +166,7 @@ module.exports = module.exports = {
 
             polygonCreated(e) {
                 //Draw the selected polygon on the drawnItems layer
+                e.layer.setStyle({className: 'brevflet'});
                 drawnItems.addLayer(e.layer);
 
                 //Generate a sql statement for the sql api
@@ -270,7 +275,7 @@ module.exports = module.exports = {
             onSendToExplorer(e) {
 
                 if (this.state.data.length <= 0) {
-                    alert("Vælg Addresser først");
+                    alert("Ingen addresser valgt. Vælg addresser først");
                     return;
                 }
 
@@ -388,7 +393,7 @@ module.exports = module.exports = {
             }
         }
 
-        utils.createMainTab(exId, "Brevflet", "Vælg addresser til brug i Edj Explorer. Der kan maks vises 100 addresser i menuen, og maks 800 på kortet", require('./../../../browser/modules/height')().max);
+        utils.createMainTab(exId, "Brevflet", "Vælg addresser til brug i Edj Explorer. Vælg ved at tegne med tegne værktøjet i kortet. (Der kan maks vises 100 addresser i menuen)", require('./../../../browser/modules/height')().max);
 
         // Append to DOM
         //==============
