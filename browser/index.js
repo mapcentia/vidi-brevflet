@@ -117,11 +117,17 @@ module.exports = module.exports = {
 
                     backboneEvents.get().trigger("reset:all");
                     mapObj.addControl(drawControl);
+                    mapObj.on('draw:created', (e) => this.polygonCreated(e));
+                    mapObj.on('draw:edited', (e) => this.polygonChanged(e));
+                    mapObj.on('draw:deletestop', (e) => this.polygonChanged(e));
 
                 } else {
                     drawnItems.clearLayers();
                     markers.clearLayers();
                     mapObj.removeControl(drawControl);
+                    mapObj.off('draw:created');
+                    mapObj.off('draw:edited');
+                    mapObj.off('draw:deletestop');
                 }
             }
 
@@ -165,10 +171,6 @@ module.exports = module.exports = {
 
 
                 mapObj.addControl(drawnItems);
-
-                mapObj.on('draw:created', (e) => this.polygonCreated(e));
-                mapObj.on('draw:edited', (e) => this.polygonChanged(e));
-                mapObj.on('draw:deletestop', (e) => this.polygonChanged(e));
             }
 
 
