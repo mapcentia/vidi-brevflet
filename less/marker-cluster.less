@@ -1,0 +1,88 @@
+@background_color_1: rgba(181, 226, 140, 0.6);
+@background_color_2: rgba(110, 204, 57, 0.6);
+@background_color_3: rgba(241, 211, 87, 0.6);
+@background_color_4: rgba(240, 194, 12, 0.6);
+@background_color_5: rgba(253, 156, 115, 0.6);
+@background_color_6: rgba(241, 128, 23, 0.6);
+@background_color_7: rgb(181, 226, 140);
+@background_color_8: rgb(110, 204, 57);
+@background_color_9: rgb(241, 211, 87);
+@background_color_10: rgb(240, 194, 12);
+@background_color_11: rgb(253, 156, 115);
+@background_color_12: rgb(241, 128, 23);
+
+/* IE 6-8 fallback colors */
+.leaflet-cluster-anim {
+	.leaflet-marker-icon {
+		-webkit-transition: -webkit-transform 0.3s ease-out, opacity 0.3s ease-in;
+		-moz-transition: -moz-transform 0.3s ease-out, opacity 0.3s ease-in;
+		-o-transition: -o-transform 0.3s ease-out, opacity 0.3s ease-in;
+		transition: transform 0.3s ease-out, opacity 0.3s ease-in;
+	}
+	.leaflet-marker-shadow {
+		-webkit-transition: -webkit-transform 0.3s ease-out, opacity 0.3s ease-in;
+		-moz-transition: -moz-transform 0.3s ease-out, opacity 0.3s ease-in;
+		-o-transition: -o-transform 0.3s ease-out, opacity 0.3s ease-in;
+		transition: transform 0.3s ease-out, opacity 0.3s ease-in;
+	}
+}
+.leaflet-cluster-spider-leg {
+	-webkit-transition: -webkit-stroke-dashoffset 0.3s ease-out, -webkit-stroke-opacity 0.3s ease-in;
+	-moz-transition: -moz-stroke-dashoffset 0.3s ease-out, -moz-stroke-opacity 0.3s ease-in;
+	-o-transition: -o-stroke-dashoffset 0.3s ease-out, -o-stroke-opacity 0.3s ease-in;
+	transition: stroke-dashoffset 0.3s ease-out, stroke-opacity 0.3s ease-in;
+}
+.marker-cluster-small {
+	background-color: @background_color_1;
+	div {
+		background-color: @background_color_2;
+	}
+}
+.marker-cluster-medium {
+	background-color: @background_color_3;
+	div {
+		background-color: @background_color_4;
+	}
+}
+.marker-cluster-large {
+	background-color: @background_color_5;
+	div {
+		background-color: @background_color_6;
+	}
+}
+.leaflet-oldie {
+	.marker-cluster-small {
+		background-color: @background_color_7;
+		div {
+			background-color: @background_color_8;
+		}
+	}
+	.marker-cluster-medium {
+		background-color: @background_color_9;
+		div {
+			background-color: @background_color_10;
+		}
+	}
+	.marker-cluster-large {
+		background-color: @background_color_11;
+		div {
+			background-color: @background_color_12;
+		}
+	}
+}
+.marker-cluster {
+	background-clip: padding-box;
+	border-radius: 20px;
+	div {
+		width: 30px;
+		height: 30px;
+		margin-left: 5px;
+		margin-top: 5px;
+		text-align: center;
+		border-radius: 15px;
+		font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+	}
+	span {
+		line-height: 30px;
+	}
+}
