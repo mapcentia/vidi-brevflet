@@ -1,8 +1,3 @@
-/**
- * @fileoverview Description of file, its uses and information
- * about its dependencies.
- */
-
 'use strict';
 
 require('leaflet.markercluster');
@@ -42,7 +37,7 @@ var drawnItems = new L.FeatureGroup();
  * @type {L.FeatureGroup}
  */
 var markers = L.markerClusterGroup({
-    disableClusteringAtZoom:18
+    disableClusteringAtZoom: 18
 });
 
 /**
@@ -66,7 +61,6 @@ var transformPoint;
  */
 
 module.exports = module.exports = {
-
     /**
      *
      * @param o
@@ -82,30 +76,28 @@ module.exports = module.exports = {
 
     init: function () {
 
-       
-
         mapObj = cloud.get().map;
 
         var React = require('react');
         var ReactDOM = require('react-dom');
 
         class BrevFlet extends React.Component {
+            
             constructor(props) {
                 super(props);
 
                 let self = this
                 backboneEvents.get().on("reset:all", function () {
-                    //If component is not active, reset all other
-                    if (self.state.active){
+                    //If component is active, reset it
+                    if (self.state.active) {
                         self.onActive(false);
-                    }                    
+                    }
                 });
 
                 this.state = {
                     active: false,
                     data: []
                 };
-
             }
 
             onActive(checked) {
@@ -114,13 +106,11 @@ module.exports = module.exports = {
                 });
 
                 if (checked) {
-
                     backboneEvents.get().trigger("reset:all");
                     mapObj.addControl(drawControl);
                     mapObj.on('draw:created', (e) => this.polygonCreated(e));
                     mapObj.on('draw:edited', (e) => this.polygonChanged(e));
                     mapObj.on('draw:deletestop', (e) => this.polygonChanged(e));
-
                 } else {
                     drawnItems.clearLayers();
                     markers.clearLayers();
@@ -132,27 +122,28 @@ module.exports = module.exports = {
             }
 
             componentDidMount() {
-                L.drawLocal = require('../../../browser/modules/drawLocales/draw.js');
 
                 drawControl = new L.Control.Draw({
                     position: 'topright',
                     draw: {
                         polygon: {
-                            title: 'Draw a polygon!',
+                            title: 'tegn et polygon!',
                             allowIntersection: true,
                             shapeOptions: {
                                 color: '#ff0000'
                             },
                             showArea: true
                         },
-                        rectangle: false,
-                        marker: false,
-                        polyline: false,
                         circle: {
+                            title: 'tegn en cirkel',
                             shapeOptions: {
                                 color: '#ff0000'
                             }
-                        }
+                        },
+                        rectangle: false,
+                        marker: false,
+                        polyline: false,
+                        circlemarker: false
                     },
                     edit: {
                         featureGroup: drawnItems
@@ -168,15 +159,12 @@ module.exports = module.exports = {
                     }
                 });
 
-
-
                 mapObj.addControl(drawnItems);
             }
 
-
             polygonCreated(e) {
                 //Draw the selected polygon on the drawnItems layer
-                e.layer.setStyle({className: 'brevflet'});
+                e.layer.setStyle({ className: 'brevflet' });
                 drawnItems.addLayer(e.layer);
 
                 //Generate a sql statement for the sql api
@@ -205,12 +193,11 @@ module.exports = module.exports = {
                         success: (data) => this.sqlQueryComplete(data)
                     });
                 }
-
-
             }
 
             generateSqlUrl() {
 
+                //If there are no drawn items
                 if (drawnItems.getLayers().length === 0) {
                     return "";
                 }
@@ -278,7 +265,7 @@ module.exports = module.exports = {
                         icon: icon,
                         title: feature.properties.vejnavn + " " + feature.properties.husnr
                     })
-                        .addTo(markers);
+                    .addTo(markers);
                 }
             }
 
@@ -373,16 +360,18 @@ module.exports = module.exports = {
                         <div className="panel panel-default">
                             <div className="panel-body">
                                 <div className="form-group">
+                                    
                                     <div className="togglebutton">
                                         <label><input id="brevflet-btn" type="checkbox"
                                             checked={this.state.active}
                                             onChange={(e) => this.onActive(e.target.checked)} />{__("Activate")}
                                         </label>
-
                                     </div>
+
                                     <div className="btn-container" style={{ textAlign: 'center' }} >
                                         <button className="btn btn-primary" onClick={(e) => this.onSendToExplorer(e)}>Send til Ejd Explorer</button>
                                     </div>
+
                                 </div>
 
                                 <div className="selected-addresses">
@@ -394,9 +383,8 @@ module.exports = module.exports = {
                                         {selected}
                                     </ul>
                                 </div>
+
                             </div>
-
-
                         </div>
                     </div>
                 );
@@ -408,7 +396,6 @@ module.exports = module.exports = {
         // Append to DOM
         //==============
         try {
-
             ReactDOM.render(
                 <BrevFlet />,
                 document.getElementById(exId)
