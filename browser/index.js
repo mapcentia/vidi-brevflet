@@ -254,7 +254,7 @@ module.exports = module.exports = {
 
                     let name = feature.properties.vejnavn + ' ' + feature.properties.husnr;
                     //Remove spaces and ' chars
-                    let concatedName = name.replace(/'|\s/g, '');
+                    let concatedName = name.replace(/[^A-Z0-9]+/ig, '');
 
                     let icon = new L.DivIcon({
                         className: 'brevflet-marker ' + 'brevflet-marker-' + concatedName,
@@ -341,7 +341,7 @@ module.exports = module.exports = {
 
                 let selected = listData.map((x, index) => {
                     let name = x.properties.vejnavn + ' ' + x.properties.husnr;
-                    let concatedName = name.replace(/'|\s/g, '');
+                    let concatedName = name.replace(/[^A-Z0-9]+/ig, '');
 
                     return (
                         <li key={index}
@@ -391,7 +391,7 @@ module.exports = module.exports = {
             }
         }
 
-        utils.createMainTab(exId, "Brevflet", "Vælg addresser til brug i Edj Explorer. Vælg ved at tegne med tegne værktøjet i kortet. (Der kan maks vises 100 addresser i menuen)", require('./../../../browser/modules/height')().max);
+        utils.createMainTab(exId, "Brevflet", "Dette komponent kræver at ejd explorer er installeret. Vælg addresser til brug i Edj Explorer. Vælg ved at tegne med tegne værktøjet i kortet. (Der kan maks vises 100 addresser i menuen)", require('./../../../browser/modules/height')().max);
 
         // Append to DOM
         //==============
