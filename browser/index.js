@@ -391,7 +391,7 @@ module.exports = module.exports = {
             }
         }
 
-        utils.createMainTab(exId, "Brevflet", "Dette komponent kræver at ejd explorer er installeret. Vælg addresser til brug i Edj Explorer. Vælg ved at tegne med tegne værktøjet i kortet. (Der kan maks vises 100 addresser i menuen)", require('./../../../browser/modules/height')().max);
+        utils.createMainTab(exId, "Brevflet", "Dette komponent kræver at ejd explorer er installeret. Vælg addresser til brug i Edj Explorer. Vælg ved at tegne med tegne værktøjet i kortet. (Der kan maks vises 100 addresser i menuen)", require('./../../../browser/modules/height')().max,'mail_outline');
 
         // Append to DOM
         //==============
