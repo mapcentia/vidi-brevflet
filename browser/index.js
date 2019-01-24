@@ -234,7 +234,7 @@ module.exports = module.exports = {
 
                 }
                 return "SELECT ST_X(St_transform(the_geom,4326)) as lng,ST_Y(St_transform(the_geom,4326)) as lat," +
-                    "kommunekode,vejkode,husnr,vejnavn FROM grundkort.adgangsadresser where" + whereClauses.join(" OR ");
+                    "kommunekode,vejkode,husnr,vejnavn FROM dawa.adgangsadresser where" + whereClauses.join(" OR ");
             }
 
             sqlQueryComplete(data) {
