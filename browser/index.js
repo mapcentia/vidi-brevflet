@@ -24,7 +24,7 @@ var backboneEvents;
  *
  * @type {string}
  */
-var exId = "brevflet";
+const MODULE_NAME = "vidi-brevflet";
 
 /**
  *
@@ -73,7 +73,12 @@ module.exports = module.exports = {
         backboneEvents = o.backboneEvents;
         return this;
     },
-
+    off: () => {
+        alert("OFF")
+    },
+    on: () => {
+        alert("ON")
+    },
     init: function () {
 
         mapObj = cloud.get().map;
@@ -81,18 +86,18 @@ module.exports = module.exports = {
         var React = require('react');
         var ReactDOM = require('react-dom');
 
+
+        backboneEvents.get().on(`off:${MODULE_NAME}`, () => {
+            alert(`off:${MODULE_NAME}`)
+        });
+
+
         class BrevFlet extends React.Component {
-            
+
             constructor(props) {
                 super(props);
 
                 let self = this
-                backboneEvents.get().on("reset:all", function () {
-                    //If component is active, reset it
-                    if (self.state.active) {
-                        self.onActive(false);
-                    }
-                });
 
                 this.state = {
                     active: false,
@@ -100,29 +105,22 @@ module.exports = module.exports = {
                 };
             }
 
-            onActive(checked) {
-                this.setState({
-                    active: checked
-                });
-
-                if (checked) {
+            componentDidMount() {
+                backboneEvents.get().on(`on:${MODULE_NAME}`, () => {
                     backboneEvents.get().trigger("reset:all");
                     mapObj.addControl(drawControl);
                     mapObj.on('draw:created', (e) => this.polygonCreated(e));
                     mapObj.on('draw:edited', (e) => this.polygonChanged(e));
                     mapObj.on('draw:deletestop', (e) => this.polygonChanged(e));
-                } else {
+                });
+                backboneEvents.get().on(`off:all`, () => {
                     drawnItems.clearLayers();
                     markers.clearLayers();
                     mapObj.removeControl(drawControl);
                     mapObj.off('draw:created');
                     mapObj.off('draw:edited');
                     mapObj.off('draw:deletestop');
-                }
-            }
-
-            componentDidMount() {
-
+                });
                 drawControl = new L.Control.Draw({
                     position: 'topright',
                     draw: {
@@ -163,13 +161,14 @@ module.exports = module.exports = {
             }
 
             polygonCreated(e) {
+                alert()
                 //Draw the selected polygon on the drawnItems layer
-                e.layer.setStyle({ className: 'brevflet' });
+                e.layer.setStyle({className: 'brevflet'});
                 drawnItems.addLayer(e.layer);
 
                 //Generate a sql statement for the sql api
                 let sql = this.generateSqlUrl();
-                let url = 'http://gc2.frederiksberg.dk/api/v2/sql/frederiksberg?q=' + sql;
+                let url = '//gc2.frederiksberg.dk/api/v2/sql/frederiksberg?q=' + sql;
 
                 //Query the sql api
                 $.ajax({
@@ -265,7 +264,7 @@ module.exports = module.exports = {
                         icon: icon,
                         title: feature.properties.vejnavn + " " + feature.properties.husnr
                     })
-                    .addTo(markers);
+                        .addTo(markers);
                 }
             }
 
@@ -349,7 +348,8 @@ module.exports = module.exports = {
                             onMouseLeave={(e) => this.itemMouseLeave(e, concatedName)}
                             className="list-group-item address">
                             {name}
-                            <span onClick={(e) => this.onRemoveItem(e, index, name)} className="glyphicon glyphicon-remove-circle remove-icon"></span>
+                            <span onClick={(e) => this.onRemoveItem(e, index, name)}
+                                  className="glyphicon glyphicon-remove-circle remove-icon"></span>
                         </li>
                     );
                 })
@@ -360,16 +360,11 @@ module.exports = module.exports = {
                         <div className="panel panel-default">
                             <div className="panel-body">
                                 <div className="form-group">
-                                    
-                                    <div className="togglebutton">
-                                        <label><input id="brevflet-btn" type="checkbox"
-                                            checked={this.state.active}
-                                            onChange={(e) => this.onActive(e.target.checked)} />{__("Activate")}
-                                        </label>
-                                    </div>
 
-                                    <div className="btn-container" style={{ textAlign: 'center' }} >
-                                        <button className="btn btn-primary" onClick={(e) => this.onSendToExplorer(e)}>Send til Ejd Explorer</button>
+                                    <div className="btn-container" style={{textAlign: 'center'}}>
+                                        <button className="btn btn-primary"
+                                                onClick={(e) => this.onSendToExplorer(e)}>Send til Ejd Explorer
+                                        </button>
                                     </div>
 
                                 </div>
@@ -391,14 +386,15 @@ module.exports = module.exports = {
             }
         }
 
-        utils.createMainTab(exId, "Brevflet", "Dette komponent kræver at ejd explorer er installeret. Vælg addresser til brug i Edj Explorer. Vælg ved at tegne med tegne værktøjet i kortet. (Der kan maks vises 100 addresser i menuen)", require('./../../../browser/modules/height')().max,'mail_outline');
+        utils.createMainTab(MODULE_NAME, "Brevflet", "Dette komponent kræver at ejd explorer er installeret. Vælg addresser til brug i Edj Explorer. Vælg ved at tegne med tegne værktøjet i kortet. (Der kan maks vises 100 addresser i menuen)", require('./../../../browser/modules/height')().max, 'mail_outline', false, MODULE_NAME);
+
 
         // Append to DOM
         //==============
         try {
             ReactDOM.render(
-                <BrevFlet />,
-                document.getElementById(exId)
+                <BrevFlet/>,
+                document.getElementById(MODULE_NAME)
             );
         } catch (e) {
 
