@@ -87,11 +87,6 @@ module.exports = module.exports = {
         var ReactDOM = require('react-dom');
 
 
-        backboneEvents.get().on(`off:${MODULE_NAME}`, () => {
-            alert(`off:${MODULE_NAME}`)
-        });
-
-
         class BrevFlet extends React.Component {
 
             constructor(props) {
@@ -116,6 +111,7 @@ module.exports = module.exports = {
                 backboneEvents.get().on(`off:all`, () => {
                     drawnItems.clearLayers();
                     markers.clearLayers();
+                    this.setState({data: []});
                     mapObj.removeControl(drawControl);
                     mapObj.off('draw:created');
                     mapObj.off('draw:edited');
@@ -161,7 +157,6 @@ module.exports = module.exports = {
             }
 
             polygonCreated(e) {
-                alert()
                 //Draw the selected polygon on the drawnItems layer
                 e.layer.setStyle({className: 'brevflet'});
                 drawnItems.addLayer(e.layer);
