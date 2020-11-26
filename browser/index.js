@@ -175,7 +175,7 @@ module.exports = module.exports = {
 
             polygonChanged(e) {
                 let sql = this.generateSqlUrl();
-                let url = 'http://gc2.frederiksberg.dk/api/v2/sql/frederiksberg?q=' + sql;
+                let url = '//gc2.frederiksberg.dk/api/v2/sql/frederiksberg?q=' + sql;
 
                 //If nothing is selected
                 if (sql === '') {
@@ -283,7 +283,7 @@ module.exports = module.exports = {
                 let search_params = 'municipalitycode=' + municipalitycode.join(',') + '&streetcode=' + streetcode.join(',') + '&housecode=' + housecode.join(',');
                 let data = escape(search_params);
 
-                let url = 'http://www.kortviser.dk/UsersPublic/Handlers/LIFAExternalIntegrationServiceREST.ashx';
+                let url = '//www.kortviser.dk/UsersPublic/Handlers/LIFAExternalIntegrationServiceREST.ashx';
 
                 $.ajax({
                     url: url,
