@@ -1,6 +1,5 @@
 'use strict';
 
-require('leaflet.markercluster');
 
 /**
  *
