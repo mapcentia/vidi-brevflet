@@ -95,7 +95,8 @@ module.exports = module.exports = {
 
                 this.state = {
                     active: false,
-                    data: []
+                    data: [],
+                    ejdUrl: "sdsd"
                 };
             }
 
@@ -260,10 +261,12 @@ module.exports = module.exports = {
                     })
                         .addTo(markers);
                 }
+                this.onSendToExplorer()
             }
 
-            onSendToExplorer(e) {
+            onSendToExplorer() {
 
+                let me = this;
                 if (this.state.data.length <= 0) {
                     alert("Ingen addresser valgt. Vælg addresser først");
                     return;
@@ -290,8 +293,8 @@ module.exports = module.exports = {
                     data: data,
                     dataType: 'json',
                     success: function (data) {
-                        let ejdexpl_url = 'ejdexpl://?mode=merge&LIFAExternalIntegrationServiceID=' + data.lifaexternalintegrationserviceid;
-                        window.open(ejdexpl_url, '_self');
+                        let ejdUrl = 'ejdexpl://?mode=merge&LIFAExternalIntegrationServiceID=' + data.lifaexternalintegrationserviceid;
+                        me.setState({ejdUrl: ejdUrl});
                     }
                 });
             }
@@ -356,9 +359,8 @@ module.exports = module.exports = {
                                 <div className="form-group">
 
                                     <div className="btn-container" style={{textAlign: 'center'}}>
-                                        <button className="btn btn-primary"
-                                                onClick={(e) => this.onSendToExplorer(e)}>Send til Ejd Explorer
-                                        </button>
+                                        <a target="_blank" href={this.state.ejdUrl} className="btn btn-primary">Send til Ejd
+                                            Explorer</a>
                                     </div>
 
                                 </div>
