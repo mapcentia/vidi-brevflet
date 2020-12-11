@@ -317,6 +317,7 @@ module.exports = module.exports = {
                     active: this.state.active,
                     data: data
                 })
+                this.onSendToExplorer()
             }
 
             itemMouseEnter(e, nameToHighlight) {
