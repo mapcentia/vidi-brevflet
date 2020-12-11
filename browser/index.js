@@ -96,7 +96,7 @@ module.exports = module.exports = {
                 this.state = {
                     active: false,
                     data: [],
-                    ejdUrl: "sdsd"
+                    ejdUrl: null
                 };
             }
 
