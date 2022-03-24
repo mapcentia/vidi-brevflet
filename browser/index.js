@@ -59,6 +59,8 @@ var transformPoint;
  * @type {{set: module.exports.set, init: module.exports.init}}
  */
 
+import {GEOJSON_PRECISION} from '../../../browser/modules/constants';
+
 module.exports = module.exports = {
     /**
      *
@@ -200,7 +202,7 @@ module.exports = module.exports = {
 
                 //Convert each polygon into geoJson
                 drawnItems.eachLayer(layer => {
-                    let newLayer = layer.toGeoJSON();
+                    let newLayer = layer.toGeoJSON(GEOJSON_PRECISION);
 
                     //If the polygon is a circle, add its radius to its properties
                     if (newLayer.geometry.type === 'Point')
@@ -302,7 +304,7 @@ module.exports = module.exports = {
             onRemoveItem(e, index, nameToFind) {
                 let layerToRemove;
                 markers.eachLayer((layer) => {
-                    let geoJson = layer.toGeoJSON();
+                    let geoJson = layer.toGeoJSON(GEOJSON_PRECISION);
                     if (layer.options.title === nameToFind) {
                         layerToRemove = layer;
                     }
