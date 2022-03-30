@@ -165,7 +165,7 @@ module.exports = module.exports = {
 
                 //Generate a sql statement for the sql api
                 let sql = this.generateSqlUrl();
-                let url = '//gc2.frederiksberg.dk/api/v2/sql/frederiksberg?q=' + sql;
+                let url = 'https://dk.gc2.io/api/v2/sql/dk?q=' + sql;
 
                 //Query the sql api
                 $.ajax({
@@ -177,7 +177,7 @@ module.exports = module.exports = {
 
             polygonChanged(e) {
                 let sql = this.generateSqlUrl();
-                let url = '//gc2.frederiksberg.dk/api/v2/sql/frederiksberg?q=' + sql;
+                let url = 'https://dk.gc2.io/api/v2/sql/dk?q=' + sql;
 
                 //If nothing is selected
                 if (sql === '') {
@@ -230,7 +230,7 @@ module.exports = module.exports = {
 
                 }
                 return "SELECT ST_X(St_transform(the_geom,4326)) as lng,ST_Y(St_transform(the_geom,4326)) as lat," +
-                    "kommunekode,vejkode,husnr,vejnavn FROM dawa.adgangsadresser where" + whereClauses.join(" OR ");
+                    "kommunekode,vejkode,husnr,vejnavn FROM dar.adgangsadresser_links where" + whereClauses.join(" OR ");
             }
 
             sqlQueryComplete(data) {
