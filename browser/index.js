@@ -347,9 +347,11 @@ module.exports = module.exports = {
                             onMouseEnter={(e) => this.itemMouseEnter(e, concatedName)}
                             onMouseLeave={(e) => this.itemMouseLeave(e, concatedName)}
                             className="list-group-item address">
-                            {name}
-                            <span onClick={(e) => this.onRemoveItem(e, index, name)}
-                                  className="glyphicon glyphicon-remove-circle remove-icon"></span>
+                            <div className="d-flex justify-content-between">
+                                <div>{name}</div>
+                                <div onClick={(e) => this.onRemoveItem(e, index, name)}
+                                     className="bi bi-trash cursor-pointer"></div>
+                            </div>
                         </li>
                     );
                 })
@@ -360,19 +362,15 @@ module.exports = module.exports = {
                         <div className="panel panel-default">
                             <div className="panel-body">
                                 <div className="form-group">
-
-                                    <div className="btn-container" style={{textAlign: 'center'}}>
-                                        <a target="_blank" href={this.state.ejdUrl} className="btn btn-primary">Send til Ejd
-                                            Explorer</a>
-                                    </div>
-
+                                    <a target="_blank" href={this.state.ejdUrl} className="btn btn-primary mb-3">
+                                        Send til Ejd Explorer</a>
                                 </div>
 
                                 <div className="selected-addresses">
                                     Valgte Addresser: {this.state.data.length}
                                 </div>
 
-                                <div className="list" style={this.marginBottomXl}>
+                                <div className="list">
                                     <ul className="list-group">
                                         {selected}
                                     </ul>
@@ -385,7 +383,7 @@ module.exports = module.exports = {
             }
         }
 
-        utils.createMainTab(MODULE_NAME, "Brevflet", "Dette komponent kræver at ejd explorer er installeret. Vælg addresser til brug i Edj Explorer. Vælg ved at tegne med tegne værktøjet i kortet. (Der kan maks vises 100 addresser i menuen)", require('./../../../browser/modules/height')().max, 'mail_outline', false, MODULE_NAME);
+        utils.createMainTab(MODULE_NAME, "Brevflet", "Dette komponent kræver at ejd explorer er installeret. Vælg addresser til brug i Edj Explorer. Vælg ved at tegne med tegne værktøjet i kortet. (Der kan maks vises 100 addresser i menuen)", require('./../../../browser/modules/height')().max, 'bi bi-envelope', false, MODULE_NAME);
 
 
         // Append to DOM
