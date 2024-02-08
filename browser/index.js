@@ -1,63 +1,23 @@
+/*
+ * @author     brunnernikolaj
+ * @copyright  2013-2024 Frederiksberg Kommune
+ * @license    http://www.gnu.org/licenses/#AGPL  GNU AFFERO GENERAL PUBLIC LICENSE 3
+ */
+
 'use strict';
 
 
-/**
- *
- * @type {*|exports|module.exports}
- */
-var cloud;
-
-/**
- *
- * @type {*|exports|module.exports}
- */
-var utils;
-
-/**
- *
- * @type {*|exports|module.exports}
- */
-var backboneEvents;
-
-/**
- *
- * @type {string}
- */
+let cloud;
+let utils;
+let backboneEvents;
 const MODULE_NAME = "vidi-brevflet";
-
-/**
- *
- * @type {L.FeatureGroup}
- */
-var drawnItems = new L.FeatureGroup();
-
-/**
- *
- * @type {L.FeatureGroup}
- */
-var markers = L.markerClusterGroup({
+const drawnItems = new L.FeatureGroup();
+const markers = L.markerClusterGroup({
     disableClusteringAtZoom: 18
 });
-
-/**
- * @type {*|exports|module.exports}
- */
-var drawControl;
-
-/**
- *
- */
-var mapObj;
-
-/**
- *
- */
-var transformPoint;
-
-/**
- *
- * @type {{set: module.exports.set, init: module.exports.init}}
- */
+let drawControl;
+let mapObj;
+let transformPoint;
 
 import {GEOJSON_PRECISION} from '../../../browser/modules/constants';
 
@@ -168,11 +128,17 @@ module.exports = module.exports = {
                 let url = 'https://dk.gc2.io/api/v2/sql/dk?q=' + sql;
 
                 //Query the sql api
-                $.ajax({
-                    url: url,
-                    dataType: 'json',
-                    success: (data) => this.sqlQueryComplete(data)
-                });
+                fetch(url)
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error('Error: ' + response.statusText);
+                        }
+                    })
+                    .then(data => this.sqlQueryComplete(data))
+                    .catch(error => console.error('Error:', error));
+
             }
 
             polygonChanged(e) {
@@ -183,11 +149,10 @@ module.exports = module.exports = {
                 if (sql === '') {
                     this.sqlQueryComplete([]);
                 } else {
-                    $.ajax({
-                        url: url,
-                        dataType: 'json',
-                        success: (data) => this.sqlQueryComplete(data)
-                    });
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => this.sqlQueryComplete(data))
+                        .catch(error => console.error('Error:', error));
                 }
             }
 
@@ -289,16 +254,27 @@ module.exports = module.exports = {
 
                 let url = '//www.kortviser.dk/UsersPublic/Handlers/LIFAExternalIntegrationServiceREST.ashx';
 
-                $.ajax({
-                    url: url,
+                fetch(url, {
                     method: 'POST',
-                    data: data,
-                    dataType: 'json',
-                    success: function (data) {
-                        let ejdUrl = 'ejdexpl://?mode=merge&LIFAExternalIntegrationServiceID=' + data.lifaexternalintegrationserviceid;
-                        me.setState({ejdUrl: ejdUrl});
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json',
                     }
-                });
+                })
+                    .then((response) => {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error('Error: ' + response.statusText);
+                        }
+                    })
+                    .then((data) => {
+                        let ejdUrl = 'ejdexpl://?mode=merge&LIFAExternalIntegrationServiceID=' + data.lifaexternalintegrationserviceid;
+                        this.setState({ejdUrl: ejdUrl});
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
             }
 
             onRemoveItem(e, index, nameToFind) {
