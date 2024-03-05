@@ -254,7 +254,7 @@ module.exports = module.exports = {
                         realPropertyKey.push(x.properties.matrikelnummer);
                     });
                     let searchParams = 'CadastralDistrictIdentifier=' + cadastralDistrictIdentifier.join(',') + '&RealPropertyKey=' + realPropertyKey.join(',');
-                    let ejdUrl = 'ejdexpl://?mode=single&' + searchParams;
+                    let ejdUrl = 'ejdexpl://?mode=merge&' + searchParams;
                     me.setState({ejdUrl: ejdUrl});
                 }
             }
