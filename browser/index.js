@@ -21,6 +21,7 @@ const parcels = L.geoJson(null, {style: {color: '#6ECC39'}, interactive: false})
 let drawControl;
 let mapObj;
 let transformPoint;
+const MAX_FEATURES = 1000;
 
 import {GEOJSON_PRECISION} from '../../../browser/modules/constants';
 
@@ -317,8 +318,8 @@ module.exports = module.exports = {
 
             render() {
                 let listData = this.state.data.slice();
-                if (listData.length >= 100) {
-                    listData.splice(100, listData.length - 100);
+                if (listData.length >= MAX_FEATURES) {
+                    listData.splice(MAX_FEATURES, listData.length - MAX_FEATURES);
                 }
                 let selected = listData.map((x, index) => {
                     let name;
@@ -378,7 +379,7 @@ module.exports = module.exports = {
             }
         }
 
-        utils.createMainTab(MODULE_NAME, "Brevflet", "Dette komponent kræver at ejd explorer er installeret. Vælg addresser til brug i Edj Explorer. Vælg ved at tegne med tegne værktøjet i kortet. (Der kan maks vises 100 addresser i menuen)", require('./../../../browser/modules/height')().max, 'bi bi-envelope', false, MODULE_NAME);
+        utils.createMainTab(MODULE_NAME, "Brevflet", `Dette komponent kræver at ejd explorer er installeret. Vælg addresser til brug i Edj Explorer. Vælg ved at tegne med tegne værktøjet i kortet. (Der kan maks vises ${MAX_FEATURES} addresser i menuen)`, require('./../../../browser/modules/height')().max, 'bi bi-envelope', false, MODULE_NAME);
 
         // Append to DOM
         //==============
