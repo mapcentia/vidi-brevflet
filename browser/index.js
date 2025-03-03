@@ -129,6 +129,7 @@ module.exports = module.exports = {
                 const url = this.state.ejdUrl;
                 if (!url) {
                     alert("Ingen ejendomme valgt");
+                    return;
                 }
                 window.open(url);
             };
