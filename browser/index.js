@@ -60,6 +60,7 @@ module.exports = module.exports = {
                     searchType: "addr"
                 };
                 this.handleTypeChange = this.handleTypeChange.bind(this);
+                this.handSendTilEjdEx = this.handSendTilEjdEx.bind(this);
             }
 
             componentDidMount() {
@@ -122,6 +123,14 @@ module.exports = module.exports = {
                 markers.clearLayers();
                 parcels.clearLayers();
                 this.setState({searchType: event.target.value, data: [], ejdUrl: null});
+            };
+
+            handSendTilEjdEx()  {
+                const url = this.state.ejdUrl;
+                if (!url) {
+                    alert("Ingen ejendomme valgt");
+                }
+                window.open(url);
             };
 
             polygonCreated(e) {
@@ -257,6 +266,7 @@ module.exports = module.exports = {
                     let searchParams = 'CadastralDistrictIdentifier=' + cadastralDistrictIdentifier.join(',') + '&RealPropertyKey=' + realPropertyKey.join(',');
                     let ejdUrl = 'ejdexpl://?mode=merge&' + searchParams;
                     me.setState({ejdUrl: ejdUrl});
+
                 }
             }
 
@@ -361,8 +371,8 @@ module.exports = module.exports = {
                                     </label>
                                 </span>
                                 <div className="form-group">
-                                    <a target="_blank" href={this.state.ejdUrl} className="btn btn-primary mb-3">
-                                        Send til Ejd Explorer</a>
+                                    <button className="btn btn-primary mb-3" onClick={this.handSendTilEjdEx}>
+                                        Send til Ejd Explorer</button>
                                 </div>
                                 <div className="selected-addresses">
                                     Valgte Addresser: {this.state.data.length}
