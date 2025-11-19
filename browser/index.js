@@ -24,6 +24,7 @@ let transformPoint;
 const MAX_FEATURES = 1000;
 
 import {GEOJSON_PRECISION} from '../../../browser/modules/constants';
+import {createRoot} from "react-dom/client";
 
 
 module.exports = module.exports = {
@@ -395,13 +396,7 @@ module.exports = module.exports = {
         // Append to DOM
         //==============
         try {
-            ReactDOM.render(
-                <BrevFlet/>,
-                document.getElementById(MODULE_NAME)
-            );
-        } catch (e) {
-
-        }
-
+            createRoot(document.getElementById(MODULE_NAME)).render(<BrevFlet/>);
+        } catch (e) {}
     }
 };
